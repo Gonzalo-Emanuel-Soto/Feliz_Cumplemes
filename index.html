@@ -1,24 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feliz Cumplemes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-B/GM4XqrwhNWXNOWMbloTmrYXZg10cakyGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe" crossorigin="anonymous">
-    <link rel="stylesheet" href="main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feliz Cumplemes 💕</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>html,body{min-height:100%;background:linear-gradient(160deg,#ffd6e5,#e4d4ff) fixed}</style>
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
+  <canvas id="fondo" aria-hidden="true"></canvas>
 
-    <!-- Contenedor del fondo animado de corazones -->
-    <div id="hearts-container"></div>
+  <!-- Gatito reutilizable (usa el color de texto como pelaje) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="cara" viewBox="0 0 120 110">
+      <polygon points="14,48 22,6 54,28" fill="currentColor"/>
+      <polygon points="106,48 98,6 66,28" fill="currentColor"/>
+      <polygon points="24,38 28,19 43,30" fill="#ffb3c7"/>
+      <polygon points="96,38 92,19 77,30" fill="#ffb3c7"/>
+      <ellipse cx="60" cy="68" rx="48" ry="38" fill="currentColor"/>
+      <ellipse cx="28" cy="80" rx="8" ry="5" fill="#ff8fb0" opacity=".55"/>
+      <ellipse cx="92" cy="80" rx="8" ry="5" fill="#ff8fb0" opacity=".55"/>
+      <path d="M56 76h8l-4 5z" fill="#ff6f9c"/>
+      <path d="M60 81q-5 7-11 2M60 81q5 7 11 2" stroke="#3b2240" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M8 70l20 4M8 80l20-2M112 70l-20 4M112 80l-20-2" stroke="#3b2240" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+    </symbol>
+    <symbol id="gatito" viewBox="0 0 120 110">
+      <use href="#cara" width="120" height="110"/>
+      <ellipse cx="42" cy="64" rx="7" ry="9" fill="#3b2240"/>
+      <ellipse cx="78" cy="64" rx="7" ry="9" fill="#3b2240"/>
+      <circle cx="44.5" cy="60" r="3" fill="#fff"/>
+      <circle cx="80.5" cy="60" r="3" fill="#fff"/>
+    </symbol>
+    <symbol id="gatito-amor" viewBox="0 0 120 110">
+      <use href="#cara" width="120" height="110"/>
+      <path d="M42 73C31 65 32 53 39 53C41 53 42 55 42 57C42 55 43 53 45 53C52 53 53 65 42 73Z" fill="#ff3d7f"/>
+      <path d="M78 73C67 65 68 53 75 53C77 53 78 55 78 57C78 55 79 53 81 53C88 53 89 65 78 73Z" fill="#ff3d7f"/>
+    </symbol>
+  </svg>
 
-    <header class="position-relative z-1">
-        <h1 style="color: #ff69b4;">Feliz Cumplemes Mi Amor!!!</h1>
-    </header>
+  <main class="tarjeta">
+    <h1>¡Feliz cumplemes, mi Bebu!</h1>
+    <p class="subtitulo">Un mes más juntos 🐾💕</p>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVSyW1EnlD8mifY2TV03r20Y0CN7uqx1tQogjPL" crossorigin="anonymous"></script>
-    
-    <!-- Enlace a tu script JS -->
-    <script src="script.js"></script>
+    <div class="gatitos" id="gatitos" aria-hidden="true">
+      <svg class="gatito g1"><use href="#gatito"/></svg>
+      <svg class="gatito g2"><use href="#gatito"/></svg>
+      <svg class="gatito g3"><use href="#gatito"/></svg>
+    </div>
+
+    <h2 id="pregunta">¿Sabías que te amo?</h2>
+
+    <div class="botones" id="botones">
+      <button type="button" id="btnSi" class="btn btn-si">Sí</button>
+      <div class="hueco" id="hueco">
+        <button type="button" id="btnMentira" class="btn btn-mentira">Mentira</button>
+      </div>
+    </div>
+
+    <section id="final" class="final oculto">
+      <article class="carta" id="carta" title="Tocá para leer todo de una">
+        <p id="cartaTexto"></p>
+      </article>
+      <div id="regalo" class="regalo oculto">
+        <p class="regalo-texto">Tenés un regalo 🎁</p>
+        <button type="button" id="caja" class="caja" aria-label="Abrir el regalo">🎁</button>
+        <div id="cupon" class="cupon oculto">
+          <p class="cupon-sobre">Cupón de regalo para mi Bebu</p>
+          <p class="cupon-titulo">Vale por un día de mimos 🧸</p>
+          <p class="cupon-pie">Canjealo cuando quieras 💕</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p class="pie-titulo">Llevamos juntos 🌸</p>
+    <div class="contador">
+      <div class="unidad" id="u-anios" hidden><span id="c-anios">0</span><small>años</small></div>
+      <div class="unidad"><span id="c-meses">0</span><small>meses</small></div>
+      <div class="unidad"><span id="c-dias">0</span><small>días</small></div>
+      <div class="unidad"><span id="c-horas">00</span><small>horas</small></div>
+      <div class="unidad"><span id="c-min">00</span><small>min</small></div>
+      <div class="unidad"><span id="c-seg">00</span><small>seg</small></div>
+    </div>
+    <p class="pie-fecha">Desde el 21 de septiembre, día de la primavera</p>
+  </footer>
+
+  <svg class="gatito esquina izq g1" aria-hidden="true"><use href="#gatito"/></svg>
+  <svg class="gatito esquina der g3" aria-hidden="true"><use href="#gatito"/></svg>
+
+  <script src="script.js"></script>
 </body>
 </html>
